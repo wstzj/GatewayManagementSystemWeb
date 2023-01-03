@@ -29,7 +29,6 @@ const routes = [
     path: '/device',
     name: 'home',
     component: DeviceManagementView,
-
   },
 ]
 
