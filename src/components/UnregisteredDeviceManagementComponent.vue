@@ -39,27 +39,27 @@
       </v-row>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-dialog
-            v-model="dialog"
-            width="600px"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-                text
-                color="#1E88E5"
-                v-bind="attrs"
-                v-on="on"
-            >
-              查看详情
-            </v-btn>
-          </template>
-          <iframe width="560"
-                  height="315"
-                  v-if="dialog"
-                  :src="device.deviceStreamingAddress"
-                  frameborder="0"
-                  allowfullscreen></iframe>
-        </v-dialog>
+<!--        <v-dialog-->
+<!--            v-model="dialog"-->
+<!--            width="600px"-->
+<!--        >-->
+<!--          <template v-slot:activator="{ on, attrs }">-->
+<!--            <v-btn-->
+<!--                text-->
+<!--                color="#1E88E5"-->
+<!--                v-bind="attrs"-->
+<!--                v-on="on"-->
+<!--            >-->
+<!--              查看详情-->
+<!--            </v-btn>-->
+<!--          </template>-->
+<!--          <iframe width="560"-->
+<!--                  height="315"-->
+<!--                  v-if="dialog"-->
+<!--                  :src="device.deviceStreamingAddress"-->
+<!--                  frameborder="0"-->
+<!--                  allowfullscreen></iframe>-->
+<!--        </v-dialog>-->
         <v-dialog
             v-model="dialog1"
             width="600px"
@@ -71,16 +71,23 @@
                 v-bind="attrs"
                 v-on="on"
             >
-              添加设备
+              启动设备
             </v-btn>
           </template>
           <v-card>
             <v-card-title>
-              设备命名
+              设备启动
             </v-card-title>
             <v-card-text>
               <v-text-field
                   v-model="deviceName"
+                  label="设备命名"
+                  outlined
+                  clearable
+              ></v-text-field>
+              <v-text-field
+                  v-model="deviceStreamingAddress"
+                  label="设备推流地址"
                   outlined
                   clearable
               ></v-text-field>
@@ -116,10 +123,12 @@ export default {
     deviceName: "",
     dialog: false,
     dialog1: false,
-    deviceAccessTime: ""
+    deviceAccessTime: "",
+    deviceStreamingAddress:""
   }),
   mounted() {
     this.deviceAccessTime = moment.unix(this.$props.device.deviceAccessTime).format("YYYY年M月D日HH:mm:ss")
+    this.deviceStreamingAddress = this.$props.device.deviceStreamingAddress
   },
   methods: {
     registerDevice() {

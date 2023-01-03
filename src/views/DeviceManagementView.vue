@@ -111,7 +111,7 @@ export default {
     panel2: [],
     tab: null,
     items: [
-      '已登记设备', '未登记设备'
+      '已启动设备', '未启动设备'
     ],
     registered_device: [],
     unregistered_device: [],
