@@ -32,9 +32,12 @@
             class="mx-4"
         />
         <v-col cols="2">
-          查看产品更多信息？
-          <br>
-          <a href="javascript:void(0)">了解更多</a>
+          <v-container class="mt-4">
+            查看设备更多信息？
+            <br>
+            <a href="javascript:void(0)">了解更多</a>
+          </v-container>
+
         </v-col>
       </v-row>
       <v-card-actions>
