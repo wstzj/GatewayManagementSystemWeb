@@ -86,15 +86,22 @@ export default {
     dialog: false,
     deviceAccessTime: "",
     deviceStartTime: "",
-    deviceRunningTime:""
+    deviceRunningTime: ""
   }),
   mounted() {
     this.updateTime()
     let that = this;
     console.log(this.deviceStartTime)
     this.timer = setInterval(() => {
-      let duration = moment().format('x') - moment(that.deviceStartTime).format('x')
-      that.deviceRunningTime = moment().subtract(duration).format("HH:mm:ss")
+      let x = moment.unix(this.$props.device.deviceStartTime);
+      let y = moment();  //当下时间
+      let duration = moment.duration(y.diff(x, 'ms'));   //做差
+      let days = duration.get('days');
+      let hours = duration.get('hours');
+      let mins = duration.get('minutes');
+      let ss = duration.get('seconds');
+      console.log(days, hours, mins, ss)
+      that.deviceRunningTime = days + "天" + hours + "小时" + mins + "分" + ss + "秒"
     }, 1000)
   },
   methods: {
