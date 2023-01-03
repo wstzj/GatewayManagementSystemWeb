@@ -127,7 +127,6 @@ export default {
       this.$props.device.deviceStartTime = moment().unix().toString()
       this.$props.device.deviceName = this.deviceName
       this.$store.state.registeredDevice.push(this.device)
-      console.log(this.$store.state.registeredDevice)
       this.$store.state.unRegisteredDevice.splice(this.serialNumber, 1)
     }
   }
