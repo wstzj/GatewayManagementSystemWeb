@@ -89,7 +89,7 @@
                   v-model="deviceStreamingAddress"
                   label="设备推流地址"
                   outlined
-                  clearable
+                  disabled
               ></v-text-field>
             </v-card-text>
             <v-card-actions>
