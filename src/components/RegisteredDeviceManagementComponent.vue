@@ -16,10 +16,13 @@
           </v-row>
           <v-row class="mt-4">
             <v-col>
-              设备接入日期:
+              设备接入日期:{{ deviceAccessTime }}
             </v-col>
             <v-col>
-              设备运行时间:
+              设备添加时间:{{ deviceStartTime }}
+            </v-col>
+            <v-col>
+              设备运行时间:{{ deviceRunningTime }}
             </v-col>
           </v-row>
 
@@ -70,20 +73,42 @@
 </template>
 
 <script>
+let moment = require('moment');
+moment().format();
+
 export default {
   props: {
-    device: {}
+    device: {},
+    serialNumber: Number,
   },
   name: "RegisteredDeviceManagementComponent",
   data: () => ({
     dialog: false,
+    deviceAccessTime: "",
+    deviceStartTime: "",
+    deviceRunningTime:""
   }),
-  methods:{
-    unRegisteredDevice(){
-      this.$store.state.unRegisteredDevice.push(this.device)
-      this.$store.state.registeredDevice.splice(this.serialNumber,1)
-    }
-  }
+  mounted() {
+    this.updateTime()
+    let that = this;
+    console.log(this.deviceStartTime)
+    this.timer = setInterval(() => {
+      let duration = moment().format('x') - moment(that.deviceStartTime).format('x')
+      that.deviceRunningTime = moment().subtract(duration).format("HH:mm:ss")
+    }, 1000)
+  },
+  methods: {
+    updateTime() {
+      this.deviceAccessTime = moment.unix(this.$props.device.deviceAccessTime).format("YYYY年M月D日HH:mm:ss")
+      this.deviceStartTime = moment.unix(this.$props.device.deviceStartTime).format("YYYY年M月D日HH:mm:ss")
+
+    },
+    unRegisteredDevice() {
+      this.$props.device.deviceName = "未命名设备"
+      this.$store.state.unRegisteredDevice.push(this.$props.device)
+      this.$store.state.registeredDevice.splice(this.$props.serialNumber, 1)
+    },
+  },
 }
 </script>
 

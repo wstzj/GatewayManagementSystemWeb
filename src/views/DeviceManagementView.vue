@@ -50,7 +50,8 @@
             <registered-device-management-component
                 v-for="(item,i) in registered_device"
                 :key="i"
-                v-bind:device=item
+                :device=item
+                :serial-number="i"
             />
           </v-expansion-panels>
         </v-tab-item>
@@ -85,8 +86,8 @@
             <unregistered-device-management-component
                 v-for="(item,i) in unregistered_device"
                 :key="i"
-                v-bind:device=item
-                serial-number="i"
+                :device=item
+                :serial-number="i"
             />
           </v-expansion-panels>
         </v-tab-item>
@@ -132,9 +133,9 @@ export default {
     getRegisteredDevice(){
       return this.$store.state.registeredDevice
     },
-    getUnRegisteredDevice(){
-      return this.$store.state.unRegisteredDevice
-    },
+    // getUnRegisteredDevice(){
+    //   return this.$store.state.unRegisteredDevice
+    // },
   },
   watch:{
     getRegisteredDevice(){
@@ -143,9 +144,10 @@ export default {
       }else {
         this.tab = 1
       }
-
       this.none1()
       this.none2()
+      this.registered_device = this.$store.state.registeredDevice
+      this.unregistered_device = this.$store.state.unRegisteredDevice
       this.$forceUpdate()
     },
     // getUnRegisteredDevice(){

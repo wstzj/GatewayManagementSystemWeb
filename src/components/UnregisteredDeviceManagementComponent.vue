@@ -4,39 +4,39 @@
       {{ device.deviceName }}
     </v-expansion-panel-header>
     <v-expansion-panel-content color="#F5F5F5">
-        <v-row no-gutters class="pl-4 pr-4">
-          <v-col cols="9">
-            <v-row class="mt-4">
-              <v-col>
-                设备类型:{{ device.deviceType }}
-              </v-col>
-              <v-col>
-                设备编号：{{ device.deviceNumber }}
-              </v-col>
-            </v-row>
-            <v-row class="mt-4">
-              <v-col>
-                设备接入日期:
-              </v-col>
-              <v-col>
-                设备运行时间:
-              </v-col>
-            </v-row>
+      <v-row no-gutters class="pl-4 pr-4">
+        <v-col cols="9">
+          <v-row class="mt-4">
+            <v-col>
+              设备类型:{{ device.deviceType }}
+            </v-col>
+            <v-col>
+              设备编号：{{ device.deviceNumber }}
+            </v-col>
+          </v-row>
+          <v-row class="mt-4">
+            <v-col>
+              设备接入日期:{{ deviceAccessTime }}
+            </v-col>
+            <!--              <v-col>-->
+            <!--                设备运行时间:-->
+            <!--              </v-col>-->
+          </v-row>
 
-          </v-col>
-          <v-divider
-              vertical
-              class="mx-4"
-          />
-          <v-col cols="2">
-            查看产品更多信息？
-            <br>
-            <a href="javascript:void(0)">了解更多</a>
-          </v-col>
-        </v-row>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-dialog
+        </v-col>
+        <v-divider
+            vertical
+            class="mx-4"
+        />
+        <v-col cols="2">
+          查看产品更多信息？
+          <br>
+          <a href="javascript:void(0)">了解更多</a>
+        </v-col>
+      </v-row>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-dialog
             v-model="dialog"
             width="600px"
         >
@@ -57,32 +57,75 @@
                   frameborder="0"
                   allowfullscreen></iframe>
         </v-dialog>
-          <v-btn
-              text
-              color="#1E88E5"
-              @click="registerDevice"
-          >
-            添加设备
-          </v-btn>
-        </v-card-actions>
+        <v-dialog
+            v-model="dialog1"
+            width="600px"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+                text
+                color="#1E88E5"
+                v-bind="attrs"
+                v-on="on"
+            >
+              添加设备
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              设备命名
+            </v-card-title>
+            <v-card-text>
+              <v-text-field
+                  v-model="deviceName"
+                  outlined
+                  clearable
+              ></v-text-field>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer/>
+              <v-btn
+                  color="primary"
+                  @click="registerDevice"
+              >
+                添加
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+      </v-card-actions>
     </v-expansion-panel-content>
   </v-expansion-panel>
 </template>
 
 <script>
+let moment = require('moment');
+moment().format();
+
 export default {
   props: {
     device: {},
-    serialNumber:Number,
+    serialNumber: Number,
   },
   name: "UnregisteredDeviceManagementComponent",
   data: () => ({
+    deviceName: "",
     dialog: false,
+    dialog1: false,
+    deviceAccessTime: ""
   }),
-  methods:{
-    registerDevice(){
+  mounted() {
+    this.deviceAccessTime = moment.unix(this.$props.device.deviceAccessTime).format("YYYY年M月D日HH:mm:ss")
+  },
+  methods: {
+    registerDevice() {
+      this.dialog1 = false
+      this.$props.device.deviceStartTime = moment().unix().toString()
+      this.$props.device.deviceName = this.deviceName
       this.$store.state.registeredDevice.push(this.device)
-      this.$store.state.unRegisteredDevice.splice(this.serialNumber,1)
+      console.log(this.$store.state.registeredDevice)
+      this.$store.state.unRegisteredDevice.splice(this.serialNumber, 1)
     }
   }
 }
